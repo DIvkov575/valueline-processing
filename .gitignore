@@ -3,5 +3,5 @@ venv/
 temp/
 *.iml
 .DS_Store
-output/*
-input/*
+output/
+input/

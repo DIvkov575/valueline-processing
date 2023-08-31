@@ -45,7 +45,3 @@ if __name__ == "__main__":
     with Pool(processes=4) as pool:
         pool.map(process, os.listdir("input"))
     print(f"completed in: {perf_counter() - start_time}")  # for timing execution
-
-    start_time: float = perf_counter()  # for timing execution
-    for file in os.listdir("input"): process(file)
-    print(f"completed in: {perf_counter() - start_time}")  # for timing execution

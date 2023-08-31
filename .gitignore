@@ -3,5 +3,6 @@ venv/
 temp/
 *.iml
 .DS_Store
-output/
+output.zip
 input/
+output/

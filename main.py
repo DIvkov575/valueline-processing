@@ -44,7 +44,7 @@ if __name__ == "__main__":
         os.mkdir("output")
 
     start_time: float = perf_counter()  # for timing execution
-    process(os.listdir("input")[0])
-    # with Pool(processes=4) as pool:
-    #     pool.map(process, os.listdir("input"))
+    # process(os.listdir("input")[0])
+    with Pool(processes=4) as pool:
+        pool.map(process, os.listdir("input"))
     print(f"completed in: {perf_counter() - start_time}")  # for timing execution

@@ -5,12 +5,12 @@ from multiprocessing import Pool
 
 import img2pdf
 import pdf2image
-from PIL import ImageEnhance, Image
+from PIL import ImageEnhance, Image, ImageOps
 from tqdm import tqdm
 
-contrast: float = 1.6
-brightness: float = 0.75
-
+# contrast: float = 3
+# brightness: float =0.5
+lower_contrast_threhold = 25
 
 def process(file_name: str) -> None:
     """
@@ -24,11 +24,13 @@ def process(file_name: str) -> None:
     output_images: list[bytes] = []  # used for constructing output pdf
 
     for raw_img in tqdm(pdf2image.convert_from_path(input_path), desc=f"{file_name}", unit="page"):
-        im_1: Image = ImageEnhance.Brightness(raw_img).enhance(brightness)
-        out_im: Image = ImageEnhance.Contrast(im_1).enhance(contrast)
+        im_1: Image = ImageOps.grayscale(raw_img)
+        im_1: Image = ImageOps.autocontrast(im_1, (lower_contrast_threhold, 30))
+        # im_1: Image = ImageEnhance.Brightness(im_1).enhance(brightness)
+        # im_1: Image = ImageEnhance.Contrast(im_1).enhance(contrast)
         out_img_bytes: io.BytesIO = io.BytesIO()
 
-        out_im.save(out_img_bytes, format="JPEG")
+        im_1.save(out_img_bytes, format="JPEG")
         output_images.append(out_img_bytes.getvalue())
 
     with open(output_path, "wb") as outf:
@@ -42,6 +44,7 @@ if __name__ == "__main__":
         os.mkdir("output")
 
     start_time: float = perf_counter()  # for timing execution
-    with Pool(processes=4) as pool:
-        pool.map(process, os.listdir("input"))
+    process(os.listdir("input")[0])
+    # with Pool(processes=4) as pool:
+    #     pool.map(process, os.listdir("input"))
     print(f"completed in: {perf_counter() - start_time}")  # for timing execution

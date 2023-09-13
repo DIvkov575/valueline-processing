@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 brightness: float = 1  # use this value to adjust brightness
 lower_contrast_threshold = 25  # all pixels darker than lower_contrast_threshold will be snapped to 0 (black)
+resolution = 60 # adjusts image dpi
 
 
 def process(file_name: str) -> None:
@@ -23,8 +24,7 @@ def process(file_name: str) -> None:
     output_path: str = os.path.join("output", file_name)  # output file name 🤓
     output_images: list[bytes] = []  # used for constructing output pdf
 
-    im_1 = pdf2image.convert_from_path(input_path, dpi=75, grayscale=True)[0]
-    # ImageOps.grayscale(im_1)  # greyscale image
+    im_1 = pdf2image.convert_from_path(input_path, dpi=resolution, grayscale=True)[0]
     im_1: Image = ImageOps.autocontrast(im_1, (lower_contrast_threshold, 30))  # improve contrast by snapping pixels
     im_1: Image = ImageEnhance.Brightness(im_1).enhance(brightness)  # use to tweak brightness
     out_img_bytes: io.BytesIO = io.BytesIO()

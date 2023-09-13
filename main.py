@@ -23,18 +23,19 @@ def process(file_name: str) -> None:
     output_path: str = os.path.join("output", file_name)  # output file name 🤓
     output_images: list[bytes] = []  # used for constructing output pdf
 
-    for raw_img in tqdm(pdf2image.convert_from_path(input_path), desc=f"{file_name}", unit="page"):
-        im_1: Image = ImageOps.grayscale(raw_img)  # greyscale image
+    im_1 = pdf2image.convert_from_path(input_path, dpi=75, grayscale=True)[0]
+    # ImageOps.grayscale(im_1)  # greyscale image
+    im_1: Image = ImageOps.autocontrast(im_1, (lower_contrast_threshold, 30))  # improve contrast by snapping pixels
+    im_1: Image = ImageEnhance.Brightness(im_1).enhance(brightness)  # use to tweak brightness
+    out_img_bytes: io.BytesIO = io.BytesIO()
 
-        im_1: Image = ImageOps.autocontrast(im_1, (lower_contrast_threshold, 30))  # improve contrast by snapping pixels
-        im_1: Image = ImageEnhance.Brightness(im_1).enhance(brightness)  # use to tweak brightness
-        out_img_bytes: io.BytesIO = io.BytesIO()
-
-        im_1.save(out_img_bytes, format="JPEG")
-        output_images.append(out_img_bytes.getvalue())
+    im_1.save(out_img_bytes, format="JPEG")
+    output_images.append(out_img_bytes.getvalue())
 
     with open(output_path, "wb") as outf:
         img2pdf.convert(*output_images, outputstream=outf)
+
+    print(file_name)
 
 
 if __name__ == "__main__":
@@ -43,6 +44,11 @@ if __name__ == "__main__":
         raise Exception("Please place input files in 'input/'")
     if not os.path.exists("output/"):
         os.mkdir("output")
+
+    # for file in os.listdir("input"):
+    #     process(file)
+    # process(os.listdir("input")[0])
+
 
     start_time: float = perf_counter()  # for timing execution
     with Pool(processes=4) as pool:

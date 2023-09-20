@@ -1,4 +1,3 @@
-black==23.1.0
 decimal_processing_xlsx_vesmar==0.4.2
 deprecation==2.1.0
 image2pdf==1.0.0

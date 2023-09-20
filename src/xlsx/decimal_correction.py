@@ -30,15 +30,16 @@ def correct_decimals(input_dir ="input", output_dir ="output"):
     print("execution time: ", time.time() - start_time)
 
 
-def correct_decimals_all(input_dir = "input/", output_dir ="output/"):
-    """
-    will process all pdfs
-    note! input and output dir are not created automatically
-    input and output dir names must end in slash
-    """
-
-    start_time = time.time()
-
-    process_all(input_dir, output_dir)
-
-    print("execution time: ", time.time() - start_time)
+# def correct_decimals_all(input_dir = "input/", output_dir ="output/"):
+#     """
+#     will process all pdfs
+#     note! input and output dir are not created automatically
+#     input and output dir names must end in slash
+#     """
+#
+#     start_time = time.time()
+#
+#     print(os.getcwd() )
+#     process_all("input/", "output/")
+#
+#     print("execution time: ", time.time() - start_time)

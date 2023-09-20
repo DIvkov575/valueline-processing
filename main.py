@@ -1,6 +1,5 @@
-from src.decimal_correction import correct_decimals
-# from .decimal_correction import correct_decimal
-
+# from src.xlsx.decimal_correction import correct_decimals
+# from src.pdf.contrast_brightness import adjust_bc
 
 if __name__ == '__main__':
     correct_decimals()

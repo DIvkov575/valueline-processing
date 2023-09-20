@@ -16,7 +16,7 @@ lower_contrast_threshold = 25  # all pixels darker than lower_contrast_threshold
 resolution = 60  # adjusts image dpi
 
 
-def process(file_name: str) -> None:
+def adjust_bc(file_name: str) -> None:
     """
     Adjusts both brightness and contrast
     'input' is prepended to filename for ingesting files
